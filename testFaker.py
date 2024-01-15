@@ -1,4 +1,5 @@
 import os
+import random
 
 # Инициализация джанго
 from django import setup
@@ -7,7 +8,7 @@ from django import setup
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Notes.settings')  # взял эту строчку из файла manage.py
 setup()
 
-from posts.models import Note
+from posts.models import Note, Tag
 from django.contrib.auth import get_user_model
 from faker import Faker
 
@@ -29,12 +30,27 @@ def create_users(limit):
         user.password = fake.password()
         user.phone = fake.msisdn()
         users.append(user)
+    user = User(username='admin', is_superuser=True, is_staff=True)
+    user.set_password('admin')
+    users.append(user)
     User.objects.bulk_create(users)
 
 
-def create_notes(max_limit):
-    notes: [Note] = []
+def create_tags(max_limit):
+    tags: [Tag] = []
+    Tag.objects.all().delete()
+    for i in range(max_limit):
+        tag = Tag()
+        tag.name = fake.unique.word()
+        tags.append(tag)
+    Tag.objects.bulk_create(tags)
+
+
+def create_notes(max_limit, limit_tags):
+    notes = []
     users = User.objects.all()
+    tags = Tag.objects.all()
+
     for user in users:
         count_notes = fake.pyint(0, max_limit, 1)
         for i in range(count_notes):
@@ -46,9 +62,13 @@ def create_notes(max_limit):
             notes.append(note)
     Note.objects.bulk_create(notes)
 
-
+    for note in notes:
+        count_tags = fake.pyint(0, limit_tags, 1)
+        temp_tags = random.sample(list(tags), count_tags)
+        note.tags.set(temp_tags)
 
 
 if __name__ == '__main__':
-    create_users(100)
-    create_notes(10)
+    create_users(10)
+    create_tags(10)
+    create_notes(5, 4)
