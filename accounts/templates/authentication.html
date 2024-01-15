@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+	Аутентификация
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="container">
+		<h1>Аутентификация</h1>
+		<div>
+			<a href="{% url 'login' %}">Вход</a>
+		</div>
+		<div>
+			<a href="{% url 'registration' %}">Регистрация</a>
+		</div>
+
+	</div>
+{% endblock %}
+
+
+

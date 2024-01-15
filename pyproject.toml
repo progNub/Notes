@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "notes"
+version = "0.1.0"
+description = ""
+authors = ["Roman <roma.makhunov@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.1"
+pillow = "^10.2.0"
+coverage = "^7.4.0"
+
+
+[tool.poetry.group.dev.dependencies]
+django-debug-toolbar = "^4.2.0"
+faker = "^22.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

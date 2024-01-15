@@ -1,0 +1,31 @@
+.container{
+    min-height: 40rem;
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+}
+
+.btn-group{
+    align-self: flex-end;
+    width: 210px;
+    justify-content: space-between;
+}
+
+.button{
+ min-width: 100px ;
+}
+
+.btn{
+    width: 100%;
+
+}
+
+.noteImage{
+    height: 300px;
+
+}
+
+.footer-note{
+    display: flex;
+    justify-content: space-between;
+}

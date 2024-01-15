@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+	Изменение профиля
+{% endblock %}
+
+{% block links %}
+	<link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
+
+
+{% endblock %}
+{{ user.username }}
+{% block content %}
+
+	<div class="container">
+		<h1>Данные пользователя</h1>
+
+		<form action="{% url 'edit-profile' user.username %}" method="post">
+			{% csrf_token %}
+			{% if errors %}
+				<div class="text-danger">
+					{% for error in errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			<div class="mb-3">
+				<label for="inputUsername" class="form-label">Имя пользователя</label>
+				<input name="username" type="text" class="form-control" id="inputUsername"
+					   value="{{ user.username }}">
+			</div>
+
+			<div class="mb-3">
+				<label for="inputFirstname" class="form-label">Имя</label>
+				<input name="first_name" class="form-control" id="inputFirstname" value="{{ user.first_name }}">
+			</div>
+			<div class="mb-3">
+				<label for="inputLastname" class="form-label">Фамилия</label>
+				<input name="last_name" class="form-control" id="inputLastname" value="{{ user.last_name }}">
+			</div>
+
+			<div class="mb-3">
+				<label for="inputEmail" class="form-label">Email</label>
+				<input name="email" class="form-control" id="inputEmail" value="{{ user.email }}">
+			</div>
+
+			<div class="mb-3">
+				<label for="inputPhone" class="form-label">Телефон</label>
+				<input name="phone" class="form-control" id="inputPhone" value="{{ user.phone }}">
+			</div>
+
+			<!-- Блок кнопки -->
+			<button type="submit" class="btn btn-outline-primary">Применить изменения</button>
+			<a class="btn btn-outline-primary" href="{% url 'profile' user.username %}">Отмена</a>
+		</form>
+
+	</div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+	Вход
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="container">
+		<h1>Вход</h1>
+
+
+		<form action="{% url 'login' %}" method="post">
+			{% csrf_token %}
+			{% if errors %}
+				{% for error in errors %}
+					<div class="mb-3">
+						<label class="text-danger">{{ error }}</label>
+					</div>
+				{% endfor %}
+			{% endif %}
+			<div class="mb-3">
+				<label for="id_username" class="form-label">Имя пользователя</label>
+				<input name="username" type="text" class="form-control" id="id_username" value={{ username }}>
+			</div>
+
+			<div class="mb-3">
+				<label for="exampleInputPassword" class="form-label">Пароль</label>
+				<input name="password" type="password" class="form-control" id="exampleInputPassword">
+			</div>
+
+			<button type="submit" class="btn btn-primary">Отправить</button>
+		</form>
+
+	</div>
+{% endblock %}
+
+
+

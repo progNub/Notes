@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+	Регистрация
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="container">
+		<h1>Регистрация пользователя</h1>
+
+		<form action="{% url 'registration' %}" method="post">
+			{% csrf_token %}
+			{% if errors %}
+				{% for error in errors %}
+					<div class="mb-3">
+						<label class="text-danger">{{ error }}</label>
+					</div>
+				{% endfor %}
+			{% endif %}
+			<div class="mb-3">
+				<label for="id_username" class="form-label">Имя пользователя</label>
+				<input name="username" type="text" class="form-control" id="id_username" value={{ username }}>
+			</div>
+
+			<div class="mb-3">
+				<label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>
+				<input name="email" type="email" class="form-control" id="exampleInputEmail1"
+					   aria-describedby="emailHelp" value={{ email }}>
+				<div id="emailHelp" class="form-text">Мы никогда никому не передадим вашу электронную почту.</div>
+			</div>
+			<div class="mb-3">
+				<label for="exampleInputPassword1" class="form-label">Пароль</label>
+				<input name="password1" type="password" class="form-control" id="exampleInputPassword1">
+			</div>
+			<div class="mb-3">
+				<label for="exampleInputPassword2" class="form-label">Пароль</label>
+				<input name="password2" type="password" class="form-control" id="exampleInputPassword2">
+			</div>
+			<button type="submit" class="btn btn-primary">Отправить</button>
+		</form>
+
+	</div>
+{% endblock %}
+
+
+

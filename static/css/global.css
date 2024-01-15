@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    background-color: #ffffb8;
+}
+.global-container{
+    min-height: 80vh;
+}
+
+.footer, .navbar {
+    display: flex;
+    flex-direction: column;
+    background-color: #e5e59c;
+
+}
+.footer-footer{
+    display: flex;
+    justify-content: center;
+    background-color: #bebe80;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+main {
+    flex: 1; /* Занимает доступное пространство, чтобы футер всегда оставался внизу */
+
+}
+
+
+
