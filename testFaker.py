@@ -69,6 +69,6 @@ def create_notes(max_limit, limit_tags):
 
 
 if __name__ == '__main__':
-    create_users(10)
-    create_tags(10)
-    create_notes(5, 4)
+    create_users(50)
+    create_tags(150)
+    create_notes(10, 5)

@@ -20,6 +20,16 @@
 				<div class="item-title">
 					<p><b>{{ note.title | truncatechars:30 }}</b></p>
 				</div>
+				<div class="item-title">
+					<p>Теги:
+						<b>
+							{% for tag in note.tags.all %}
+								{{ tag.name }},
+
+							{% endfor %}
+						</b>
+					</p>
+				</div>
 				<hr>
 				<div class="item-content">
 					<p>{{ note.content |truncatechars:60 }}</p>
@@ -29,11 +39,11 @@
 					<p class="text-muted"> Создано: {{ note.created_at }}</p>
 				</div>
 				<div class="item-autor">
-					<a href="{% url 'list-posts-user' note.autor__username %}"> Автор: {{ note.autor__username }}</a>
+					<a href="{% url 'list-posts-user' note.autor.username %}"> Автор: {{ note.autor.username }}</a>
 				</div>
 				<div class="autor_profile">
 
-					<a href="{% url 'profile' note.autor__username %}">Посмотреть профиль автора</a>
+					<a href="{% url 'profile' note.autor.username %}">Посмотреть профиль автора</a>
 				</div>
 
 			</div>

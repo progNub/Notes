@@ -38,8 +38,9 @@
 				<div class="container_image">
 					{% if note.image %}
 						<img class="previewImage" src="{{ note.image.url }}" alt="img" id="previewImage">
-						{% else %}
-						<img class="previewImage" src="{% static 'images/default/nophoto.png' %}" alt="img" id="previewImage">
+					{% else %}
+						<img class="previewImage" src="{% static 'images/default/nophoto.png' %}" alt="img"
+							 id="previewImage">
 					{% endif %}
 
 				</div>
@@ -56,6 +57,11 @@
 				<label for="exampleFormControlTextarea1" class="form-label">Содержимое</label>
 				<textarea name="content" class="form-control" id="exampleFormControlTextarea1"
 						  rows="10">{{ note.content }}</textarea>
+			</div>
+			<div class="mb-3">
+				<label for="tags" class="form-label">Тэги</label>
+				<input name="tags" type="text" class="form-control" id="tags" placeholder="Введите теги через запятую"
+					   value="{% for tag in note.tags.all %} {{ tag.name }}, {% endfor %}">
 			</div>
 
 			<!-- Блок кнопки -->

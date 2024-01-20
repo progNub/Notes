@@ -13,6 +13,10 @@
 	<div class="container">
 		<div class="text-center">
 			<h3>{{ note.title }}</h3>
+			Теги:
+			{% for tag in note.tags.all %}
+				<b>{{ tag.name }},</b>
+			{% endfor %}
 
 			{% if note.image %}
 				<hr>

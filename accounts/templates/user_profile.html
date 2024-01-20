@@ -17,15 +17,9 @@
 	<div class="container">
 		<h1>Данные пользователя</h1>
 		{% if message %}
-			<div class="text-success">
-				{{ message }}
-			</div>
-		{% endif %}
+			<div class="text-success">{{ message }}</div>{% endif %}
 		{% if error %}
-			<div class="text-danger">
-				{{ error }}
-			</div>
-		{% endif %}
+			<div class="text-danger">{{ error }}</div>{% endif %}
 
 		<div class="mb-3">
 			<table class="table">
@@ -81,8 +75,10 @@
 			<hr>
 			<div class="my_tags">
 				<p>Список тегов:</p>
-				{% for i in tags %}
-					| {{ i }} |
+				{% for note in notes %}
+					{% for tag in note.tags.all %}
+						{{ tag.name }},
+					{% endfor %}
 				{% endfor %}
 			</div>
 			<hr>
@@ -92,6 +88,16 @@
 						 style='cursor: pointer;'>
 						<div class="item-title">
 							<p><b>{{ note.title | truncatechars:30 }}</b></p>
+						</div>
+						<hr>
+						<div class="item-title">
+							<p>
+								<b> Теги:
+									{% for tag in note.tags.all %}
+										{{ tag.name }},
+									{% endfor %}
+								</b>
+							</p>
 						</div>
 						<hr>
 						<div class="item-content">
@@ -111,3 +117,4 @@
 
 
 {% endblock %}
+

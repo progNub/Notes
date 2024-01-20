@@ -72,11 +72,10 @@ def user_logout(request: WSGIRequest):
 
 def user_profile(request: WSGIRequest, username):
     user = get_object_or_404(User, username=username)
-    notes = user.notes.select_related('autor')
-    tags = Tag.objects.filter(notes__autor=user)
+    notes = Note.objects.filter(autor__username=username).prefetch_related('tags')
 
     if request.method == 'GET':
-        return render(request, "user_profile.html", context={'user': user, 'notes': notes, 'tags': tags})
+        return render(request, "user_profile.html", context={'user': user, 'notes': notes})
 
 
 def edit_user_profile(request: WSGIRequest, username):
