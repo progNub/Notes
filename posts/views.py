@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from django.contrib.auth.decorators import login_required
 
+from .forms import NoteForm
 from .models import Note, delete_old_image, Tag
 from .service import get_tags
 
@@ -27,23 +28,20 @@ def show_note_view(request: WSGIRequest, note_uuid):
 def create_note_view(request: WSGIRequest):
     if not request.user.is_authenticated:
         return redirect(reverse('authentication'))
+    form = NoteForm()
     if request.method == "POST":
-        note = Note.objects.create(
-            title=request.POST["title"],
-            content=request.POST["content"],
-            autor=request.user,
-            image=request.FILES.get("noteImage"))
-
-        tags_objects: set[Tag] = set()
-        for tag in get_tags(request):
-            tag_obj, created = Tag.objects.get_or_create(name=tag)
-            tags_objects.add(tag_obj)
-        note.tags.set(tags_objects)  # `set` это переопределение всех тегов для заметки.
-
-        return HttpResponseRedirect(reverse('show-note', args=[note.uuid]))
+        form = NoteForm(request.POST, request.FILES)
+        if form.is_valid():
+            note: Note = form.save(commit=False)
+            note.autor = request.user
+            note.save()
+            form.save_m2m()
+            return HttpResponseRedirect(reverse('show-note', args=[note.uuid]))
+        else:
+            return render(request, "create_form.html", context={'form': form})
 
     # Вернется только, если метод не POST.
-    return render(request, "create_form.html")
+    return render(request, "create_form.html", context={'form': form})
 
 
 @login_required

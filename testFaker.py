@@ -47,6 +47,7 @@ def create_tags(max_limit):
 
 
 def create_notes(max_limit, limit_tags):
+    Note.objects.all().delete()
     notes = []
     users = User.objects.all()
     tags = Tag.objects.all()
@@ -70,5 +71,5 @@ def create_notes(max_limit, limit_tags):
 
 if __name__ == '__main__':
     create_users(50)
-    create_tags(150)
+    create_tags(30)
     create_notes(10, 5)

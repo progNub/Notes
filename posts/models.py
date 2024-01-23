@@ -34,7 +34,7 @@ class Note(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True)  # если запустить файл testFaker то нужно убрать auto_now_add=True
     mod_time = models.DateTimeField(null=True, default=None)
-    autor = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE, related_name='notes')
+    autor = models.ForeignKey(User, null=False, on_delete=models.CASCADE, related_name='notes')
     image = models.ImageField(upload_to=upload_to, null=True, blank=True, verbose_name='Изображение')
     tags = models.ManyToManyField(Tag, blank=True, related_name="notes", verbose_name="Теги")
 

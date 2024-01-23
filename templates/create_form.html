@@ -11,6 +11,20 @@
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<link rel="stylesheet" href="{% static 'css/forms.css' %}">
 	<script src="{% static 'js/EditImage.js' %}"></script>
+
+
+	{#	для работы django-select2#}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script>$(document).ready(function () {
+        $('#id_tags').select2();
+    });</script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	{#	для работы django-select2#}
+
+
 {% endblock %}
 
 {% block content %}
@@ -21,36 +35,13 @@
 		<form action="{% url 'create-note' %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 
-			<div class="mb-3">
-				<label for="noteImage" class="form-label">Изображение</label>
-				<input name="noteImage" type="file" class="form-control" id="imageInput">
-			</div>
-			<div class="container_image">
-				{% if note.image %}
-					<img class="previewImage" src="{{ note.image.url }}" alt="img" id="previewImage">
-				{% else %}
-					<img class="previewImage" src="{% static 'images/default/nophoto.png' %}" alt="img"
-						 id="previewImage">
-				{% endif %}
-			</div>
-
-			<div class="mb-3">
-				<label for="title" class="form-label">Название</label>
-				<input name="title" type="text" class="form-control" id="title" placeholder="Введите название">
-			</div>
-
-			<div class="mb-3">
-				<label for="exampleFormControlTextarea1" class="form-label">Содержимое</label>
-				<textarea name="content" class="form-control" id="exampleFormControlTextarea1"
-						  rows="10" placeholder="Введите содержание">{{ note.content }}</textarea>
-			</div>
-			<div class="mb-3">
-				<label for="tags" class="form-label">Тэги</label>
-				<input name="tags" type="text" class="form-control" id="tags" placeholder="Введите теги через запятую">
-			</div>
-
+			{{ form.as_p }}
+			<br>
 			<button type="submit" class="btn btn-outline-primary">Отправить</button>
 
 		</form>
 	</div>
+
+
+
 {% endblock %}
