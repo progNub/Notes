@@ -9,10 +9,10 @@ readme = "README.md"
 python = "^3.12"
 django = "^5.0.1"
 pillow = "^10.2.0"
-coverage = "^7.4.0"
 psycopg2 = "^2.9.9"
-django-select2 = "^8.1.2"
 djangorestframework = "^3.14.0"
+djoser = "^2.2.2"
+coverage = "^7.4.1"
 
 
 [tool.poetry.group.dev.dependencies]

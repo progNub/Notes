@@ -28,6 +28,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('api/', include('posts.api.urls')),
 
+
     path("create", create_note_view, name="create-note"),
     path("note/<note_uuid>", show_note_view, name="show-note"),
     path('edit/<note_uuid>', edit_note_view, name='edit-note'),
@@ -35,6 +36,7 @@ urlpatterns = [
 
     path('about', show_about_view, name='about'),
     path('user/posts/<username>', list_posts_user, name='list-posts-user'),
+
 
     path("__debug__/", include("debug_toolbar.urls")),
 ]

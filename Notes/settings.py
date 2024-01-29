@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'accounts.apps.AccountsConfig',
     'posts.apps.PostsConfig',
-    'django_select2',
     "rest_framework",
+    "rest_framework.authtoken",
+    "djoser",
 ]
 
 LOGIN_REDIRECT_URL = "home"
@@ -123,6 +124,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
 }
 
 # Internationalization
