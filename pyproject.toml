@@ -13,6 +13,7 @@ psycopg2 = "^2.9.9"
 djangorestframework = "^3.14.0"
 djoser = "^2.2.2"
 coverage = "^7.4.1"
+djangorestframework-simplejwt = {extras = ["crypto"], version = "^5.3.1"}
 
 
 [tool.poetry.group.dev.dependencies]

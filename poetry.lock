@@ -390,6 +390,7 @@ files = [
 ]
 
 [package.dependencies]
+cryptography = {version = ">=3.3.1", optional = true, markers = "extra == \"crypto\""}
 django = ">=3.2"
 djangorestframework = ">=3.12"
 pyjwt = ">=1.7.1,<3"
@@ -779,4 +780,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "461ac24779be08c2d26053ba06926480b15ef10edfe06c8cdaa2581fb66afad8"
+content-hash = "91522a4a558ea1adb8c211ededfb85aa5628d605d30e1ec53263b003121f1133"
