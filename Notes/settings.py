@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'accounts.middleware.ActivityUserLog',
 ]
 
 ROOT_URLCONF = 'Notes.urls'
@@ -65,8 +66,7 @@ ROOT_URLCONF = 'Notes.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
 
         'APP_DIRS': True,
         'OPTIONS': {
@@ -128,8 +128,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication', # для djoser
-        'rest_framework_simplejwt.authentication.JWTAuthentication', # для jwt
+        'rest_framework.authentication.TokenAuthentication',  # для djoser
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # для jwt
     ]
 }
 

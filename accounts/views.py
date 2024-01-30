@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.core.validators import EmailValidator
 
 from django.db.models import Q
@@ -78,6 +79,7 @@ def user_profile(request: WSGIRequest, username):
         return render(request, "user_profile.html", context={'user': user, 'notes': notes})
 
 
+@login_required
 def edit_user_profile(request: WSGIRequest, username):
     user = get_object_or_404(User, username=username)
     if request.user.id != user.id:
@@ -111,6 +113,7 @@ def edit_user_profile(request: WSGIRequest, username):
             return render(request, "edit_user_profile.html", context={'user': user, 'errors': errors})
 
 
+@login_required
 def edit_user_password(request: WSGIRequest, username):
     user = get_object_or_404(User, username=username)
     if request.user.id != user.id:
