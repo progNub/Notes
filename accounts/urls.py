@@ -2,6 +2,8 @@ from django.urls import path
 from accounts.views import registration_view, user_logout, user_login, authentication_view, user_profile, \
     edit_user_profile, edit_user_password
 
+from posts.views import show_posts_history
+
 urlpatterns = [
     path('authentication', authentication_view, name='authentication'),
     path('registration', registration_view, name='registration'),
@@ -10,4 +12,7 @@ urlpatterns = [
     path('<username>/profile', user_profile, name='profile'),
     path('<username>/edit_profile', edit_user_profile, name='edit-profile'),
     path('<username>/edit_password', edit_user_password, name='edit-profile-password'),
+
+
+    path('history/posts', show_posts_history, name='posts_history')
 ]

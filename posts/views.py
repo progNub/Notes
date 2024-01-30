@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from django.contrib.auth.decorators import login_required
 
+from accounts.history import PostsHistory
 from .forms import NoteForm
 from .models import Note, delete_old_image, Tag
 from .service import get_tags
@@ -21,6 +22,9 @@ def home_page_view(request: WSGIRequest):
 
 
 def show_note_view(request: WSGIRequest, note_uuid):
+    history = PostsHistory(request)
+    history.add_history(note_uuid)
+
     note = get_object_or_404(Note.objects.select_related('autor').prefetch_related('tags'), uuid=note_uuid)
     return render(request, "note.html", {"note": note})
 
@@ -93,3 +97,12 @@ def list_posts_user(request: WSGIRequest, username):
         .select_related('autor').prefetch_related('tags')
     }
     return render(request, "home.html", context)
+
+
+def show_posts_history(request: WSGIRequest):
+    history = PostsHistory(request)
+    posts = history.get_history()
+    context: dict = {
+        "notes": Note.objects.filter(uuid__in=posts).select_related('autor').prefetch_related('tags')
+    }
+    return render(request, "posts_history.html", context)
