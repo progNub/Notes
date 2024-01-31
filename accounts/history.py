@@ -16,8 +16,9 @@ class PostsHistory:
     def add_history(self, note_uuid, limit=20) -> None:
         if len(self._sessions[PostsHistory.KEY_DEFAULT]) >= limit:
             self._remove_history()
-        self._sessions[PostsHistory.KEY_DEFAULT].append(note_uuid)
-        self._sessions.save()
+        if note_uuid not in self._sessions[PostsHistory.KEY_DEFAULT]:
+            self._sessions[PostsHistory.KEY_DEFAULT].append(note_uuid)
+            self._sessions.save()
 
     def clear_all_history(self) -> None:
         self._sessions[PostsHistory.KEY_DEFAULT].clear()
