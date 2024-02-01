@@ -26,32 +26,17 @@ def authentication_view(request: WSGIRequest):
     return render(request, 'authentication.html')
 
 
-def registration_view(request: WSGIRequest):
-    if request.method == 'GET':
-        return render(request, "registration.html")
-    elif request.method == 'POST':
-        data: dict = request.POST.dict()
-        data['errors'] = []
+class RegisterUser(CreateView):
+    form_class = UserRegisterForm
+    template_name = 'registration.html'
+    success_url = reverse_lazy('home')
 
-        if data['username'] and data['email'] and data['password1'] and data['password2']:
-
-            if User.objects.filter(Q(username=data['username']) | Q(email=data['email'])).count() > 0:
-                data['errors'].append('*Такой username или email уже существует.')
-
-            if data['password1'] != data['password2']:
-                data['errors'].append('*Пароли не совпадают.')
-
-        else:
-            data['errors'].append('*Все поля должны быть заполнены.')
-        if not (data['errors']):
-            user = User(username=data['username'], email=data['email'])
-            user.set_password(data['password1'])
-            user.save()
-
-            login(request, user)
-            return redirect('home')
-
-        return render(request, 'registration.html', context=data)
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        user = self.object
+        #   тут отправка письма
+        login(self.request, user)
+        return response
 
 
 def user_login(request: WSGIRequest):
