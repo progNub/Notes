@@ -15,12 +15,13 @@
 {% block content %}
 
 	<div class="container">
-		<h1>Данные пользователя</h1>
 		{% if message %}
-			<div class="text-success">{{ message }}</div>{% endif %}
+			<div class="text-success">{{ message }}</div>
+		{% endif %}
 		{% if error %}
-			<div class="text-danger">{{ error }}</div>{% endif %}
-
+			<div class="text-danger">{{ error }}</div>
+		{% endif %}
+		<h1>Данные пользователя</h1>
 		<div class="mb-3">
 			<table class="table">
 				<tr>
@@ -60,8 +61,8 @@
 					</a>
 				</div>
 				<div class="button button-edit">
-					<a href="{% url 'edit-profile-password' user.username %}" class="btn btn-warning">
-						Изменить пароль
+					<a href="{% url 'reset-password' user.id %}" class="btn btn-warning">
+						Сброс пароля
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
 							 class="bi bi-pencil"
 							 viewBox="0 0 16 16">

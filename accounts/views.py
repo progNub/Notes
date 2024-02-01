@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
 from django.core.validators import EmailValidator
 
 from django.db.models import Q
@@ -7,12 +8,16 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.handlers.wsgi import WSGIRequest
 from django.contrib.auth import login, logout
+from django.urls import reverse_lazy, reverse
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.views.generic import CreateView
 
-from accounts.models import User
+from accounts.email import ConfirmUserResetPasswordEmailSender
+from accounts.forms import UserRegisterForm
 from posts.models import Note, Tag
 
-
-# User = get_user_model()
+User = get_user_model()
 
 
 # Create your views here.
@@ -71,16 +76,19 @@ def user_logout(request: WSGIRequest):
     return redirect('home')
 
 
-def user_profile(request: WSGIRequest, username):
-    user = get_object_or_404(User, username=username)
-    notes = Note.objects.filter(autor__username=username).prefetch_related('tags')
+def user_profile(request, username):
+    context = {
+        'user': get_object_or_404(User, username=username),
+        'notes': Note.objects.filter(autor__username=username).prefetch_related('tags'),
+        'message': request.GET.get('message', '')
+    }
 
     if request.method == 'GET':
-        return render(request, "user_profile.html", context={'user': user, 'notes': notes})
+        return render(request, "user_profile.html", context=context)
 
 
 @login_required
-def edit_user_profile(request: WSGIRequest, username):
+def edit_user_profile(request: WSGIRequest, username, ):
     user = get_object_or_404(User, username=username)
     if request.user.id != user.id:
         return HttpResponseForbidden('Нет прав')
@@ -114,17 +122,38 @@ def edit_user_profile(request: WSGIRequest, username):
 
 
 @login_required
+def reset_password(request, user_id):
+    if str(request.user.id) != str(user_id):
+        return HttpResponseForbidden('Нет прав')
+
+    ConfirmUserResetPasswordEmailSender(request, request.user).send_mail()
+
+    message = f'На почту {request.user.email} было отправлено письмо с инструкцией'
+    return redirect(reverse('profile', args=[request.user.username]) + f'?message={message}')
+
+
+def get_page_edit_password(request: WSGIRequest, uidb64: str, token: str):
+    user_id = force_str(urlsafe_base64_decode(uidb64))
+    user = get_object_or_404(User, pk=user_id)
+    if default_token_generator.check_token(user, token):
+        return redirect('edit-password', user.username)
+    return redirect('home', {'error': 'ошибка сброса пароля'})
+
+
+@login_required
 def edit_user_password(request: WSGIRequest, username):
+    if request.method == 'GET':
+        return render(request, "edit_password.html")
+
+    errors = []
     user = get_object_or_404(User, username=username)
     if request.user.id != user.id:
         return HttpResponseForbidden('Нет прав')
-    if request.method == 'GET':
-        return render(request, "edit_password.html")
 
     if request.method == 'POST':
         old_password = request.POST['old_password']
         new_password = request.POST['new_password']
-        errors = []
+
         # ---------- check --------------- password ----------- check --------------
         if user.check_password(old_password):
             if new_password == '':
