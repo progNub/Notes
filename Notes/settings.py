@@ -25,9 +25,9 @@ AUTH_USER_MODEL = "accounts.User"
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-k0*2g+p7gb#*36#9ap9lnzem&$#6voy%nayu1e4(s75-%wmcjh')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_SECRET_KEY', '0') == '1'
+DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
