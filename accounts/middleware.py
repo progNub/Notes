@@ -22,9 +22,11 @@ class ActivityUserLog:
         username = request.user
         url = request.get_full_path()
         line = f'{date} | {username} | {url}\n'
-        with open(file=ActivityUserLog.FILE_NAME, mode='a', encoding='utf-8') as file:
-            file.write(line)
-
+        try:
+            with open(file=ActivityUserLog.FILE_NAME, mode='a', encoding='utf-8') as file:
+                file.write(line)
+        except Exception as e:
+            print(e)
         # Code to be executed for each request/response after
         # the view is called.
         return response
