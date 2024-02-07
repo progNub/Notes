@@ -5,7 +5,7 @@ import random
 from django import setup
 
 """Run administrative tasks."""
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Notes.settings')  # взял эту строчку из файла manage.py
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'notes.settings')  # взял эту строчку из файла manage.py
 setup()
 
 from posts.models import Note, Tag

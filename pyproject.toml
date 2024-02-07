@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "Notes"
+name = "notes"
 version = "0.1.0"
 description = ""
 authors = ["Roman <roma.makhunov@gmail.com>"]
@@ -15,6 +15,7 @@ coverage = "^7.4.1"
 djangorestframework-simplejwt = {extras = ["crypto"], version = "^5.3.1"}
 psycopg2-binary = "^2.9.9"
 gunicorn = "^21.2.0"
+
 
 
 
