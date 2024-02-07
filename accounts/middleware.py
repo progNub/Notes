@@ -1,6 +1,8 @@
 import datetime
+import os
 
 from django.http import HttpRequest
+from django.conf import settings
 
 
 # 3. * Создать и подключить middleware, который будет сохранять в файл
@@ -11,6 +13,7 @@ from django.http import HttpRequest
 # request.get_full_path()
 class ActivityUserLog:
     FILE_NAME = 'usersActivity.log'
+    FILE_PATH = os.path.join(settings.BASE_DIR,FILE_NAME)
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -22,7 +25,7 @@ class ActivityUserLog:
         username = request.user
         url = request.get_full_path()
         line = f'{date} | {username} | {url}\n'
-        with open(file=ActivityUserLog.FILE_NAME, mode='a', encoding='utf-8') as file:
+        with open(file=ActivityUserLog.FILE_PATH, mode='a', encoding='utf-8') as file:
             file.write(line)
         # Code to be executed for each request/response after
         # the view is called.
