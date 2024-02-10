@@ -135,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 REDIS_CACHE = os.environ.get('REDIS_CACHE_URL')
 if REDIS_CACHE:
     CACHES = {
