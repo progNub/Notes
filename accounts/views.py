@@ -13,7 +13,7 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.views.generic import CreateView
 
-from accounts.email import ConfirmUserResetPasswordEmailSender
+from accounts.email import ConfirmUserResetPasswordEmailSender, ConfirmEmailUserSender
 from accounts.forms import UserRegisterForm
 from posts.models import Note, Tag
 
@@ -33,10 +33,24 @@ class RegisterUser(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        user = self.object
+        self.object.is_active = False
+        self.object.save()
         #   тут отправка письма
-        login(self.request, user)
+        ConfirmEmailUserSender(self.request, self.object).send_mail()
+        #   тут отправка письма
         return response
+
+    @staticmethod
+    def confirm_email(request, uidb64: str, token: str):
+        user_id = force_str(urlsafe_base64_decode(uidb64))
+        user = get_object_or_404(User, pk=user_id)
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            return redirect('home')
 
 
 def user_login(request: WSGIRequest):
@@ -45,9 +59,12 @@ def user_login(request: WSGIRequest):
     elif request.method == 'POST':
         data: dict = request.POST.dict()
         data['errors'] = []
-
         if User.objects.filter(username=data['username']).exists():
             user: User = User.objects.get(username=data['username'])
+            if not user.is_active:
+                data['errors'].append('Учетная запись не активна.')
+                return render(request, 'login.html', context=data)
+
             if user.check_password(data['password']):
                 login(request, user)
                 return redirect('home')
@@ -122,7 +139,7 @@ def get_page_edit_password(request: WSGIRequest, uidb64: str, token: str):
     user = get_object_or_404(User, pk=user_id)
     if default_token_generator.check_token(user, token):
         return redirect('edit-password', user.username)
-    return redirect('home', {'error': 'ошибка сброса пароля'})
+    return redirect('home')
 
 
 @login_required
