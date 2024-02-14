@@ -1,6 +1,9 @@
 from celery import shared_task
+from django.contrib.auth import get_user_model
 
 from accounts.email import ConfirmEmailUserSender
+
+User = get_user_model()
 
 
 @shared_task()
@@ -10,7 +13,12 @@ def test_a_b(a, b):
 
 
 @shared_task(ignore_result=True)
-def send_register_email_tasks(request, user) -> None:
+def send_register_email_tasks(domain, user_id) -> None:
     """Отправка сообщения на почту для ее подтверждения"""
-    email = ConfirmEmailUserSender(request, user).send_mail()
-    print(f' TASK: "send_register_email_tasks" domain: {email._get_domain()}, user: {user.username}')
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        print(f' TASK: "send_register_email_tasks" id: {user_id} DoesNotExist')
+    else:
+        ConfirmEmailUserSender(domain, user).send_mail()
+        print(f' TASK: "send_register_email_tasks" domain: {domain}, user: {user.username}')

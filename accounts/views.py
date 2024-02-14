@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.validators import EmailValidator
 
 from django.db.models import Q
@@ -17,6 +18,7 @@ from accounts.email import ConfirmUserResetPasswordEmailSender, ConfirmEmailUser
 from accounts.forms import UserRegisterForm
 from posts.models import Note, Tag
 from .tasks import send_register_email_tasks
+
 
 User = get_user_model()
 
@@ -37,7 +39,8 @@ class RegisterUser(CreateView):
         self.object.is_active = False
         self.object.save()
         #   тут отправка письма c помощью Celery
-        send_register_email_tasks.delay(request=self.request, user=self.object)
+        domain = str(get_current_site(self.request))
+        send_register_email_tasks.delay(domain, user_id=self.object.id)
         #   тут отправка письма c помощью Celery
         return response
 
