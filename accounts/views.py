@@ -19,7 +19,6 @@ from accounts.forms import UserRegisterForm
 from posts.models import Note, Tag
 from .tasks import send_register_email_tasks
 
-
 User = get_user_model()
 
 
@@ -38,10 +37,13 @@ class RegisterUser(CreateView):
         response = super().form_valid(form)
         self.object.is_active = False
         self.object.save()
+        if User.objects.filter(id=self.object.id):
+            #   тут отправка письма c помощью Celery
+            domain = str(get_current_site(self.request))
+            send_register_email_tasks.delay(domain, user_id=self.object.id)
         #   тут отправка письма c помощью Celery
-        domain = str(get_current_site(self.request))
-        send_register_email_tasks.delay(domain, user_id=self.object.id)
-        #   тут отправка письма c помощью Celery
+        else:
+            print('Пользователь еще не сохранен')
         return response
 
     @staticmethod
