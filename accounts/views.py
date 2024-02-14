@@ -16,6 +16,7 @@ from django.views.generic import CreateView
 from accounts.email import ConfirmUserResetPasswordEmailSender, ConfirmEmailUserSender
 from accounts.forms import UserRegisterForm
 from posts.models import Note, Tag
+from tasks import send_register_email_tasks
 
 User = get_user_model()
 
@@ -35,9 +36,9 @@ class RegisterUser(CreateView):
         response = super().form_valid(form)
         self.object.is_active = False
         self.object.save()
-        #   тут отправка письма
-        ConfirmEmailUserSender(self.request, self.object).send_mail()
-        #   тут отправка письма
+        #   тут отправка письма c помощью Celery
+        send_register_email_tasks.delay(request=self.request, user=self.object)
+        #   тут отправка письма c помощью Celery
         return response
 
     @staticmethod

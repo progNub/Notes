@@ -1,7 +1,6 @@
 from django import forms
 
 from posts.models import Note, Tag
-from posts.service import get_tags
 
 
 class NoteForm(forms.ModelForm):
@@ -15,5 +14,3 @@ class NoteForm(forms.ModelForm):
             'image': forms.FileInput(attrs={"class": "form-control"}),
             'tags': forms.SelectMultiple(attrs={"class": "form-control"}),
         }
-
-
