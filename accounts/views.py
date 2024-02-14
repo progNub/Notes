@@ -37,14 +37,11 @@ class RegisterUser(CreateView):
         response = super().form_valid(form)
         self.object.is_active = False
         self.object.save()
-        if User.objects.filter(id=self.object.id):
-            print('пользователь существует')
-            #   тут отправка письма c помощью Celery
-            domain = str(get_current_site(self.request))
-            send_register_email_tasks.delay(domain, user_id=self.object.id)
         #   тут отправка письма c помощью Celery
-        else:
-            print('Пользователь еще не сохранен')
+        domain = str(get_current_site(self.request))
+        send_register_email_tasks.delay(domain, user_id=self.object.id)
+        #   тут отправка письма c помощью Celery
+
         return response
 
     @staticmethod
