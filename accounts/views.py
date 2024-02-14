@@ -131,8 +131,8 @@ def edit_user_profile(request: WSGIRequest, username, ):
 def reset_password(request, user_id):
     if str(request.user.id) != str(user_id):
         return HttpResponseForbidden('Нет прав')
-
-    ConfirmUserResetPasswordEmailSender(request, request.user).send_mail()
+    domain = str(get_current_site(request))
+    ConfirmUserResetPasswordEmailSender(domain, request.user).send_mail()
 
     message = f'На почту {request.user.email} было отправлено письмо с инструкцией'
     return redirect(reverse('profile', args=[request.user.username]) + f'?message={message}')
