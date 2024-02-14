@@ -16,7 +16,7 @@ from django.views.generic import CreateView
 from accounts.email import ConfirmUserResetPasswordEmailSender, ConfirmEmailUserSender
 from accounts.forms import UserRegisterForm
 from posts.models import Note, Tag
-from tasks import send_register_email_tasks
+from .tasks import send_register_email_tasks
 
 User = get_user_model()
 
