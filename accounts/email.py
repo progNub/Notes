@@ -12,8 +12,8 @@ class BaseEmailSender:
     subject = None
     user_id_field = "pk"
 
-    def __init__(self, request, user: AbstractUser):
-        self._request = request
+    def __init__(self, domain, user: AbstractUser):
+        self._domain = domain
         self._user = user
 
     def get_template_name(self) -> str:
@@ -44,7 +44,7 @@ class BaseEmailSender:
         return render_to_string(self.get_template_name(), context)
 
     def _get_domain(self) -> str:
-        return str(get_current_site(self._request))
+        return self._domain
 
     def _get_token(self) -> str:
         return default_token_generator.make_token(self._user)
