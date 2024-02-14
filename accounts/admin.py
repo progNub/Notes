@@ -6,13 +6,11 @@ from accounts.models import User
 from posts.models import Note
 
 
-
-
 # 1 Создать в панели администратора для модели пользователей отображение списка записей со следующими колонками:
 # Username, ФИО, Кол-во заметок.
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = ("username", "first_name", "last_name", 'count_notes', 'is_active')
+    list_display = ("id", "username", "first_name", "last_name", 'count_notes', 'is_active')
 
     fieldsets = (
         # 1  tuple(None, dict)
