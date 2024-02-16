@@ -40,7 +40,7 @@ class RegisterUser(CreateView):
         self.object.save()
         #   тут отправка письма c помощью Celery
         domain = str(get_current_site(self.request))
-        transaction.on_commit(lambda: send_register_email_tasks.apply_async(args=[domain, self.object.id]))
+        transaction.on_commit(lambda: send_register_email_tasks.apply_async(args=[domain, self.object.username]))
         return response
 
     @staticmethod
