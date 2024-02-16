@@ -17,7 +17,6 @@ def send_register_email_tasks(domain, user_id) -> None:
     """Отправка сообщения на почту для ее подтверждения"""
     try:
         user = User.objects.get(id=user_id)
-        print('users: ',User.objects.filter(id=user_id))
     except User.DoesNotExist:
         print(f' TASK: "send_register_email_tasks" id: {user_id} DoesNotExist')
     else:
