@@ -18,7 +18,10 @@ def send_register_email_tasks(domain, user_id) -> None:
     try:
         user = User.objects.get(id=user_id)
         users = User.objects.all()
+        users_id = []
+        for i in users:
+            users_id.append(i.id)
     except User.DoesNotExist:
-        print(f' TASK: "send_register_email_tasks" id: {user_id} DoesNotExist, users : {users}')
+        print(f' TASK: "send_register_email_tasks" id: {user_id} DoesNotExist, users : {users_id}')
     else:
         ConfirmEmailUserSender(domain, user).send_mail()
