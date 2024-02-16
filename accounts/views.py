@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.validators import EmailValidator
+from django.db import transaction
 
 from django.db.models import Q
 from django.http import HttpResponseForbidden
@@ -39,8 +40,9 @@ class RegisterUser(CreateView):
         self.object.save()
         #   тут отправка письма c помощью Celery
         domain = str(get_current_site(self.request))
-        send_register_email_tasks.delay(domain, self.object)
-        #   тут отправка письма c помощью Celery
+
+        transaction.on_commit(lambda: send_register_email_tasks.apply_async(domain,
+                                                                            user_id=self.object.id))
 
         return response
 
