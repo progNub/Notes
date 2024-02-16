@@ -17,12 +17,14 @@ def send_register_email_tasks(domain, username) -> None:
     """Отправка сообщения на почту для ее подтверждения"""
     try:
         user = User.objects.get(username=username)
-        count_user = User.objects.all().count()
-    except User.DoesNotExist:
-        print(f' TASK: "send_register_email_tasks" id: {username} DoesNotExist')
-        if count_user:
-            print(f' TASK: "sum users: {count_user}')
-        else:
-            print(f' TASK: "не нашел пользователей')
+    except Exception as e:
+        print(f' TASK: "send_register_email_tasks" id: {username}, {e}')
     else:
         ConfirmEmailUserSender(domain, user).send_mail()
+
+    try:
+        users = User.objects.all().count()
+    except Exception as e:
+        print(f' TASK: ошибка: {e}')
+    else:
+        print(f' TASK: пользователей: {users}')
