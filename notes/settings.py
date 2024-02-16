@@ -65,9 +65,7 @@ MIDDLEWARE = [
 if DEBUG:
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware", ]
 
-
 ROOT_URLCONF = 'notes.urls'
-
 
 TEMPLATES = [
     {
@@ -95,19 +93,20 @@ WSGI_APPLICATION = 'notes.wsgi.application'
 if DEBUG:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.environ.get('DATABASE_NAME'),
             "USER": os.environ.get('DATABASE_USER'),
             "PASSWORD": os.environ.get('DATABASE_PASSWORD'),
             "HOST": os.environ.get('DATABASE_HOST'),
             "PORT": 5432,
+        }
+    }
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
@@ -189,8 +188,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-    ]
+    os.path.join(BASE_DIR, 'static'),
+]
 if os.environ.get('COLLECT_STATIC'):
     STATIC_ROOT = '/var/www/notes-Django/static/'
 else:
