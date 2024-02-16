@@ -53,9 +53,9 @@ class RegisterUser(CreateView):
             user.is_active = True
             user.save()
             login(request, user)
-            return redirect('home')
+            return redirect('login')
         else:
-            return redirect('home')
+            return redirect('authentication')
 
 
 def user_login(request: WSGIRequest):
