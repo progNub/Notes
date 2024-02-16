@@ -28,3 +28,4 @@ def send_register_email_tasks(domain, username) -> None:
         print(f' TASK: ошибка: {e}')
     else:
         print(f' TASK: пользователей: {users[0].username}')
+        print(f' TASK: пользователей: {len(users)}')
