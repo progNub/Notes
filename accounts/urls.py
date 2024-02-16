@@ -1,6 +1,6 @@
 from django.urls import path
 from accounts.views import RegisterUser, user_logout, user_login, authentication_view, user_profile, \
-    edit_user_profile, edit_user_password, reset_password, get_page_edit_password
+    edit_user_profile, edit_user_password, reset_password, get_page_edit_password, confirm_email
 
 from posts.views import show_posts_history
 
@@ -8,7 +8,7 @@ urlpatterns = [
     path('authentication', authentication_view, name='authentication'),
     path('registration', RegisterUser.as_view(), name='registration'),
 
-    path('confirm_email/<uidb64>/<token>', RegisterUser.confirm_email, name='registration-confirm-email'),
+    path('confirm_email/<uidb64>/<token>', confirm_email, name='registration-confirm-email'),
 
     path('logout', user_logout, name='logout'),
     path('login', user_login, name='login'),
