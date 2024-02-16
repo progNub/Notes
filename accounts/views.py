@@ -47,8 +47,12 @@ class RegisterUser(CreateView):
 
 
 def confirm_email(request, uidb64: str, token: str):
+    print(uidb64)
+    print(token)
     user_id = force_str(urlsafe_base64_decode(uidb64))
     user = get_object_or_404(User, pk=user_id)
+    print(user_id)
+    print(user)
     if default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
@@ -56,7 +60,6 @@ def confirm_email(request, uidb64: str, token: str):
         return redirect('login')
     else:
         return redirect('authentication')
-
 
 
 def user_login(request: WSGIRequest):
