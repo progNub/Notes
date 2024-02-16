@@ -23,8 +23,8 @@ def send_register_email_tasks(domain, username) -> None:
         ConfirmEmailUserSender(domain, user).send_mail()
 
     try:
-        users = User.objects.all().count()
+        users = User.objects.all()
     except Exception as e:
         print(f' TASK: ошибка: {e}')
     else:
-        print(f' TASK: пользователей: {users}')
+        print(f' TASK: пользователей: {users[0].username}')
