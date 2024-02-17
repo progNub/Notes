@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -238,6 +239,29 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',  # Установите желаемый уровень логирования
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'DEBUG',  # Установите желаемый уровень логирования
+            'class': 'logging.FileHandler',
+            'filename': '/home/Notes/django.log',  # Укажите путь к файлу
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],  # Логируйте как в консоль, так и в файл
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }
 
 # ==========================CELERY===========================================

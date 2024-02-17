@@ -14,6 +14,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.views.generic import CreateView
+import logging
 
 from accounts.email import ConfirmUserResetPasswordEmailSender, ConfirmEmailUserSender
 from accounts.forms import UserRegisterForm
@@ -21,6 +22,7 @@ from posts.models import Note, Tag
 from .tasks import send_register_email_tasks
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -47,12 +49,12 @@ class RegisterUser(CreateView):
 
 
 def confirm_email(request, uidb64: str, token: str):
-    print(uidb64)
-    print(token)
+    logger.debug(uidb64)
+    logger.debug(token)
     user_id = force_str(urlsafe_base64_decode(uidb64))
     user = get_object_or_404(User, pk=user_id)
-    print(user_id)
-    print(user)
+    logger.debug(user_id)
+    logger.debug(user)
     if default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
