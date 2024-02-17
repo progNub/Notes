@@ -42,7 +42,7 @@ class RegisterUser(CreateView):
         self.object.save()
         #   тут отправка письма c помощью Celery
         domain = str(get_current_site(self.request))
-        send_register_email_tasks.delay(domain, self.object)
+        send_register_email_tasks.delay(domain, self.object.id)
         return response
 
 
