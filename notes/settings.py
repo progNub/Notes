@@ -242,25 +242,16 @@ SIMPLE_JWT = {
 }
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',  # Установите желаемый уровень логирования
-            'class': 'logging.StreamHandler',
-        },
-        'file': {
-            'level': 'DEBUG',  # Установите желаемый уровень логирования
-            'class': 'logging.FileHandler',
-            'filename': '/home/Notes/django.log',  # Укажите путь к файлу
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],  # Логируйте как в консоль, так и в файл
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
     },
 }
 
