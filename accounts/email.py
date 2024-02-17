@@ -12,9 +12,10 @@ class BaseEmailSender:
     subject = None
     user_id_field = "pk"
 
-    def __init__(self, domain, user: AbstractUser):
+    def __init__(self, domain, user: AbstractUser, token: str = ''):
         self._domain = domain
         self._user = user
+        self.__token = token
 
     def get_template_name(self) -> str:
         if self.template_name is None:
@@ -47,7 +48,9 @@ class BaseEmailSender:
         return self._domain
 
     def _get_token(self) -> str:
-        return default_token_generator.make_token(self._user)
+        if self.__token == '':
+            self.__token = default_token_generator.make_token(self._user)
+        return self.__token
 
     def _get_user_base64(self) -> str:
         """Кодируем идентификационное поле пользователя, указанное в атрибуте класса"""

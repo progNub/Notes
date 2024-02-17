@@ -13,11 +13,11 @@ def test_a_b(a, b):
 
 
 @shared_task(ignore_result=True)
-def send_register_email_tasks(domain, user_id) -> None:
+def send_register_email_tasks(domain, user_id, token='') -> None:
     """Отправка сообщения на почту для ее подтверждения"""
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
         print(f' TASK: "send_register_email_tasks" id: {user_id}, User.DoesNotExist')
     else:
-        ConfirmEmailUserSender(domain, user).send_mail()
+        ConfirmEmailUserSender(domain, user, token).send_mail()
