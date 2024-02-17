@@ -53,13 +53,13 @@ def confirm_email(request, uidb64: str, token: str):
     user = get_object_or_404(User, pk=user_id)
     logger.debug(f'user_id: {user_id}')
     if default_token_generator.check_token(user, token):
-        logger.debug('Прошел проверку токена', token)
+        logger.debug(f'Прошел проверку токена {token}')
         user.is_active = True
         user.save()
         login(request, user)
         return redirect('login')
     else:
-        logger.debug('Не прошел проверку токена', token)
+        logger.debug(f'Не прошел проверку токена {token}')
         return redirect('authentication')
 
 
