@@ -59,7 +59,7 @@ def confirm_email(request, uidb64: str, token: str):
         return redirect(reverse('profile', args=[request.user.username]) + f'?message={message}')
     else:
         error = f'Ошибка подтверждения почты.'
-        return redirect(reverse('authentication') + f'?error={error}')
+        return render(request, 'authentication.html', context={'error': error})
 
 
 def user_login(request: WSGIRequest):
