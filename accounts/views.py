@@ -45,7 +45,6 @@ class RegisterUser(CreateView):
         # работает проверка токена только если генерить его не в таске Celery а во view
         token = default_token_generator.make_token(self.object)
         send_register_email_tasks.delay(domain, self.object.id, token)
-        delete_user.apply_async(args=[self.object.id], coutdown=10)
         return response
 
     @staticmethod
