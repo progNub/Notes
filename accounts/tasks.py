@@ -11,10 +11,10 @@ def delete_user(user_id):
     try:
         user = User.objects.get(id=user_id, is_active=False)
     except User.DoesNotExist:
-        return 'NOT OK'
+        pass
     else:
         user.delete()
-        return 'OK'
+    return "OK"
 
 
 @shared_task(ignore_result=True)
