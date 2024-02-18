@@ -6,8 +6,6 @@ from accounts.email import ConfirmEmailUserSender
 User = get_user_model()
 
 
-
-
 @shared_task(ignore_result=True)
 def send_register_email_tasks(domain, user_id, token='') -> None:
     """Отправка сообщения на почту для ее подтверждения"""

@@ -51,15 +51,12 @@ class RegisterUser(CreateView):
 def confirm_email(request, uidb64: str, token: str):
     user_id = force_str(urlsafe_base64_decode(uidb64))
     user = get_object_or_404(User, pk=user_id)
-    logger.debug(f'user_id: {user_id}, username: {user.username} type: {type(token)}')
     if default_token_generator.check_token(user, token):
-        logger.debug(f'Прошел проверку токена {token}')
         user.is_active = True
         user.save()
         login(request, user)
         return redirect('login')
     else:
-        logger.debug(f'Не прошел проверку токена {token}')
         return redirect('authentication')
 
 
