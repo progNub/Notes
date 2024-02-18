@@ -19,7 +19,7 @@ import logging
 from accounts.email import ConfirmUserResetPasswordEmailSender, ConfirmEmailUserSender
 from accounts.forms import UserRegisterForm
 from posts.models import Note, Tag
-from .tasks import send_register_email_tasks
+from .tasks import send_register_email_tasks, delete_user
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -47,19 +47,19 @@ class RegisterUser(CreateView):
         send_register_email_tasks.delay(domain, self.object.id, token)
         return response
 
-
-def confirm_email(request, uidb64: str, token: str):
-    user_id = force_str(urlsafe_base64_decode(uidb64))
-    user = get_object_or_404(User, pk=user_id)
-    if default_token_generator.check_token(user, token):
-        user.is_active = True
-        user.save()
-        login(request, user)
-        message = f'Вы успешно зарегистрировались'
-        return redirect(reverse('profile', args=[request.user.username]) + f'?message={message}')
-    else:
-        error = f'Ошибка подтверждения почты.'
-        return render(request, 'authentication.html', context={'error': error})
+    @staticmethod
+    def confirm_email(request, uidb64: str, token: str):
+        user_id = force_str(urlsafe_base64_decode(uidb64))
+        user = get_object_or_404(User, pk=user_id)
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            message = f'Вы успешно зарегистрировались'
+            return redirect(reverse('profile', args=[request.user.username]) + f'?message={message}')
+        else:
+            error = f'Ошибка подтверждения почты.'
+            return render(request, 'authentication.html', context={'error': error})
 
 
 def user_login(request: WSGIRequest):
