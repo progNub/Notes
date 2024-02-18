@@ -10,13 +10,9 @@ from accounts.history import PostsHistory
 from .forms import NoteForm
 from .models import Note, delete_old_image, Tag
 from .service import get_tags
-from .tasks import home_page_task
 
 
 def home_page_view(request: WSGIRequest):
-
-    home_page_task.delay(str(request.user))
-
     # Обязательно! каждая функция view должна принимать первым параметром request.
     all_notes = Note.objects.all().select_related('autor').prefetch_related('tags')
     context: dict = {
