@@ -6,10 +6,6 @@ from accounts.email import ConfirmEmailUserSender
 User = get_user_model()
 
 
-@shared_task()
-def test_a_b(a, b):
-    print('TASK test_a_b(a,b)=', a, b)
-    return a + b
 
 
 @shared_task(ignore_result=True)
