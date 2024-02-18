@@ -1,6 +1,6 @@
 {% autoescape off %}
-    <p>{{ variable }} {{ user.username }}, нажмите ссылку ниже, подтвердить почту</p>
-    <br>
-    <a href="http://{{ domain }}{% url 'registration-confirm-email' uidb64 token %}">
-        http://{{ domain }}{% url 'registration-confirm-email' uidb64 token %}</a>
+	<p>{{ variable }} {{ user.username }}, нажмите ссылку ниже, подтвердить почту</p>
+	<br>
+	<a href="http://{{ domain }}{% url 'registration-confirm-email' uidb64 token %}">
+		http://{{ domain }}{% url 'registration-confirm-email' uidb64 token %}</a>
 {% endautoescape %}
