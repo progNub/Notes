@@ -58,7 +58,7 @@ def confirm_email(request, uidb64: str, token: str):
         message = f'Вы успешно зарегистрировались'
         return redirect(reverse('profile', args=[request.user.username]) + f'?message={message}')
     else:
-        error = f'Вы успешно зарегистрировались'
+        error = f'Ошибка подтверждения почты.'
         return redirect(reverse('authentication') + f'?error={error}')
 
 
