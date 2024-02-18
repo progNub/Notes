@@ -55,9 +55,11 @@ def confirm_email(request, uidb64: str, token: str):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('login')
+        message = f'Вы успешно зарегистрировались'
+        return redirect(reverse('profile', args=[request.user.username]) + f'?message={message}')
     else:
-        return redirect('authentication')
+        error = f'Вы успешно зарегистрировались'
+        return redirect(reverse('authentication') + f'?error={error}')
 
 
 def user_login(request: WSGIRequest):
