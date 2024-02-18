@@ -12,6 +12,12 @@
 
 	<div class="container">
 		<h1>Аутентификация</h1>
+		{% if message %}
+			<div class="text-success">{{ message }}</div>
+		{% endif %}
+		{% if error %}
+			<div class="text-danger">{{ error }}</div>
+		{% endif %}
 		<div>
 			<a href="{% url 'login' %}">Вход</a>
 		</div>
