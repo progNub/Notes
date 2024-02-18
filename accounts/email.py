@@ -74,4 +74,4 @@ class ConfirmEmailUserSender(BaseEmailSender):
     def _get_token(self) -> str:
         if self.__token == '':
             self.__token = super()._get_token()
-            return self.__token
+        return self.__token
